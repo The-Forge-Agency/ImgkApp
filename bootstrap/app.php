@@ -1,5 +1,6 @@
 <?php
 
+use App\Support\ImgkException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -18,4 +19,13 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->shouldRenderJsonWhen(
             fn (Request $request) => $request->is('api/*') || $request->expectsJson(),
         );
+
+        // Les erreurs métier du proxy sortent en JSON clair, jamais en page HTML.
+        $exceptions->render(function (ImgkException $e, Request $request) {
+            return response()->json(
+                ['error' => $e->getMessage()],
+                $e->status,
+                ['Cache-Control' => 'no-store', 'Access-Control-Allow-Origin' => '*'],
+            );
+        });
     })->create();
