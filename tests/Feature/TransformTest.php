@@ -334,8 +334,14 @@ test('la réponse porte un cache long, un ETag et répond 304', function () {
 
 test('page= extrait une page d\'un PDF', function () {
     $pdf = new Imagick;
-    $pdf->newImage(200, 280, new ImagickPixel('#ffffff'));
-    $pdf->newImage(200, 280, new ImagickPixel('#ff0000'));
+
+    foreach (['#ffffff', '#ff0000'] as $color) {
+        $page = new Imagick;
+        $page->newImage(200, 280, new ImagickPixel($color));
+        $page->setImageFormat('pdf');
+        $pdf->addImage($page);
+    }
+
     $pdf->setFormat('pdf');
     fakeFetcher([SRC => $pdf->getImagesBlob()]);
 

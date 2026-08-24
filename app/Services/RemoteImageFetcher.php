@@ -54,7 +54,20 @@ class RemoteImageFetcher implements ImageFetcher
             return null;
         }
 
-        if (! preg_match('#^/u/([0-9A-Za-z]{26})(?:\.[a-z0-9]+)?$#', $parts['path'] ?? '', $m)) {
+        $path = $parts['path'] ?? '';
+
+        // Les images de démo embarquées sont aussi lues sur disque.
+        if (preg_match('#^/demo/([a-z0-9-]+\.(?:jpg|png|webp))$#', $path, $demo)) {
+            $file = public_path('demo/'.$demo[1]);
+
+            if (! is_file($file)) {
+                throw new ImgkException('Cette image de démo n\'existe pas.', 404);
+            }
+
+            return self::validated((string) file_get_contents($file), null);
+        }
+
+        if (! preg_match('#^/u/([0-9A-Za-z]{26})(?:\.[a-z0-9]+)?$#', $path, $m)) {
             return null;
         }
 
