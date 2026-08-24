@@ -1,50 +1,60 @@
 <?php
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Services\ImageFetcher;
+use Tests\Support\FakeFetcher;
 use Tests\TestCase;
 
-/*
-|--------------------------------------------------------------------------
-| Test Case
-|--------------------------------------------------------------------------
-|
-| The closure you provide to your test functions is always bound to a specific PHPUnit test
-| case class. By default, that class is "PHPUnit\Framework\TestCase". Of course, you may
-| need to change it using the "pest()" function to bind different classes or traits.
-|
-*/
+pest()->extend(TestCase::class)->in('Feature', 'Unit');
 
-pest()->extend(TestCase::class)
- // ->use(RefreshDatabase::class)
-    ->in('Feature');
-
-/*
-|--------------------------------------------------------------------------
-| Expectations
-|--------------------------------------------------------------------------
-|
-| When you're writing tests, you often need to check that values meet certain conditions. The
-| "expect()" function gives you access to a set of "expectations" methods that you can use
-| to assert different things. Of course, you may extend the Expectation API at any time.
-|
-*/
-
-expect()->extend('toBeOne', function () {
-    return $this->toBe(1);
-});
-
-/*
-|--------------------------------------------------------------------------
-| Functions
-|--------------------------------------------------------------------------
-|
-| While Pest is very powerful out-of-the-box, you may have some testing code specific to your
-| project that you don't want to repeat in every file. Here you can also expose helpers as
-| global functions to help you to reduce the number of lines of code in your test files.
-|
-*/
-
-function something()
+/**
+ * Génère une image de test en mémoire (dégradé + coins colorés, repérable).
+ */
+function fixtureImage(int $width = 400, int $height = 300, string $format = 'png'): string
 {
-    // ..
+    $im = new Imagick;
+    $im->newPseudoImage($width, $height, 'gradient:#5b8cff-#0d1017');
+    $im->setImageColorspace(Imagick::COLORSPACE_SRGB);
+
+    $draw = new ImagickDraw;
+    $draw->setFillColor(new ImagickPixel('#ff0000'));
+    $draw->rectangle(0, 0, (int) ($width / 4), (int) ($height / 4));
+    $im->drawImage($draw);
+
+    $im->setImageFormat($format === 'jpg' ? 'jpeg' : $format);
+
+    return $im->getImageBlob();
+}
+
+/**
+ * Image transparente avec un carré opaque au centre (tests bg/trim).
+ */
+function fixtureTransparentImage(int $width = 200, int $height = 200): string
+{
+    $im = new Imagick;
+    $im->newImage($width, $height, new ImagickPixel('transparent'));
+
+    $draw = new ImagickDraw;
+    $draw->setFillColor(new ImagickPixel('#5b8cff'));
+    $draw->rectangle((int) ($width / 4), (int) ($height / 4), (int) ($width * 3 / 4), (int) ($height * 3 / 4));
+    $im->drawImage($draw);
+
+    $im->setImageFormat('png');
+
+    return $im->getImageBlob();
+}
+
+function fakeFetcher(array $urls): FakeFetcher
+{
+    $fake = new FakeFetcher($urls);
+    app()->instance(ImageFetcher::class, $fake);
+
+    return $fake;
+}
+
+function imagickFrom(string $bytes): Imagick
+{
+    $im = new Imagick;
+    $im->readImageBlob($bytes);
+
+    return $im;
 }
