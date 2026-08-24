@@ -14,7 +14,7 @@
             <div class="flex items-center gap-2">
                 <a href="{{ route('docs') }}" class="hidden sm:inline-flex btn btn-ghost !py-2 !px-4 text-sm">Docs</a>
                 <button type="button" class="btn btn-ghost !py-2 !px-4 text-sm" x-on:click="reset()" x-bind:disabled="!activeSource">Effacer</button>
-                <button type="button" class="btn btn-primary !py-2 !px-4 text-sm" x-on:click="copyAddress()" x-bind:disabled="!activeSource">
+                <button type="button" class="hidden sm:inline-flex btn btn-primary !py-2 !px-4 text-sm" x-on:click="copyAddress()" x-bind:disabled="!activeSource">
                     <span x-show="!copied">Copier le lien</span>
                     <span x-show="copied" x-cloak>Copié !</span>
                 </button>

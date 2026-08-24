@@ -229,7 +229,9 @@ class ImageTransformer
     {
         match ($p->conversion) {
             'white-black' => $im->transformImageColorspace(Imagick::COLORSPACE_GRAY),
-            'sepia' => $im->sepiaToneImage(0.8 * Imagick::getQuantum()),
+            // sepiaToneImage rend des couleurs fausses sur certains builds :
+            // un mapping duotone brun/crème donne un sépia fidèle et déterministe.
+            'sepia' => $this->applyDuotone($im, ['2b1d0e', 'f2e3c8']),
             'invert' => $im->negateImage(false),
             'duotone' => $this->applyDuotone($im, $p->duotone ?? ['0d1017', '5b8cff']),
             'scan' => $this->applyScan($im),

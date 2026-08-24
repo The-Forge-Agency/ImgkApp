@@ -214,6 +214,10 @@ input[type='checkbox'] {
 .compare-after {
     position: absolute;
     inset: 0;
+    /* Fond opaque : l'avant ne doit jamais transparaître sous l'après
+       (letterbox du contain, zones transparentes du résultat). */
+    background:
+        repeating-conic-gradient(var(--bg-alt) 0% 25%, var(--bg) 0% 50%) 0 0 / 20px 20px;
 }
 
 .compare-handle {
