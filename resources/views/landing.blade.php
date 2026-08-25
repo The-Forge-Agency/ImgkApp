@@ -17,7 +17,7 @@
                 <a href="#exemples" class="hover:text-[var(--accent)] transition-colors">Exemples</a>
                 <a href="{{ route('docs') }}" class="hover:text-[var(--accent)] transition-colors">Docs</a>
                 <a href="https://github.com/The-Forge-Agency/ImgkApp" target="_blank" rel="noopener" class="hover:text-[var(--accent)] transition-colors">GitHub</a>
-                <span class="opacity-60">#17/52</span>
+                <span class="opacity-60">#16/52</span>
             </div>
             <a href="{{ route('studio') }}" class="btn btn-primary !py-2 !px-4 text-sm">Commencer</a>
         </nav>
@@ -25,7 +25,7 @@
 
     {{-- Hero --}}
     <section class="mx-auto max-w-4xl px-4 pt-16 pb-10 text-center rise">
-        <span class="chip">App #17/52 · en ligne cette semaine</span>
+        <span class="chip">App #16/52 · en ligne cette semaine</span>
         <h1 class="mt-6 text-4xl sm:text-5xl md:text-6xl font-bold leading-tight tracking-tight">
             Transforme une image juste<br class="hidden sm:block">
             en écrivant une <span style="color:var(--accent)">adresse</span>
@@ -175,7 +175,7 @@
     {{-- Footer --}}
     <footer class="mt-auto border-t" style="border-color:var(--bd)">
         <div class="mx-auto max-w-6xl px-4 py-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm" style="color:var(--ink-alt)">
-            <span>imgk · app #17/52 · TFA52</span>
+            <span>imgk · app #16/52 · TFA52</span>
             <span class="flex items-center gap-4">
                 <a href="{{ route('docs') }}" class="hover:text-[var(--accent)] transition-colors">Docs</a>
                 <a href="https://github.com/The-Forge-Agency/ImgkApp" target="_blank" rel="noopener" class="hover:text-[var(--accent)] transition-colors">Open source</a>
